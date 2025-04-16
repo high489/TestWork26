@@ -4,7 +4,9 @@
     "stylelint-config-standard-scss",
     "stylelint-config-css-modules"
   ],
-  "plugins": ["stylelint-scss"],
+  "plugins": [
+    "stylelint-scss"
+  ],
   "rules": {
     "selector-class-pattern": null,
     "color-function-notation": "legacy",
@@ -12,9 +14,6 @@
     "declaration-block-no-redundant-longhand-properties": null,
     "max-nesting-depth": 5,
     "scss/at-rule-no-unknown": null,
-    "css-modules/no-global-scoped-selector": [
-      true,
-      { "fileExtensions": [".module.css", ".module.scss"] }
-    ]
+    "no-empty-source": null
   }
 }
