@@ -1,0 +1,49 @@
+{
+  "name": "test-work-26",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "build:check": "prettier --check . && stylelint \"**/*.{css,scss}\" && next build",
+    "build:fix": "prettier --write . && stylelint \"**/*.{css,scss}\" && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write .",
+    "stylelint": "stylelint \"**/*.{css,scss}\"",
+    "stylelint:fix": "stylelint \"**/*.{css,scss}\" --fix"
+  },
+  "dependencies": {
+    "axios": "^1.8.4",
+    "bootstrap": "^5.3.5",
+    "next": "15.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sass": "^1.86.3",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
+    "eslint-config-next": "15.3.0",
+    "eslint-config-prettier": "^10.1.2",
+    "postcss": "^8.5.3",
+    "postcss-preset-env": "^10.1.5",
+    "prettier": "^3.5.3",
+    "stylelint": "^16.18.0",
+    "stylelint-config-css-modules": "^4.4.0",
+    "stylelint-config-standard": "^38.0.0",
+    "stylelint-config-standard-scss": "^14.0.0",
+    "stylelint-scss": "^6.11.1",
+    "typescript": "^5"
+  },
+  "browserslist": [
+    ">0.3%",
+    "not dead",
+    "not op_mini all",
+    "last 3 versions"
+  ]
+}
