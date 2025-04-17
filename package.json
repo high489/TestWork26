@@ -17,6 +17,7 @@
     "axios": "^1.8.4",
     "bootstrap": "^5.3.5",
     "next": "15.3.0",
+    "normalize.css": "^8.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sass": "^1.86.3",
