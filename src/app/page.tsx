@@ -10,5 +10,5 @@ export default function Home() {
       </section>
       <footer className={`${styles['footer']} container`}>Footer</footer>
     </div>
-  );
+  )
 }
