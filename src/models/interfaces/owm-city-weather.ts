@@ -12,18 +12,18 @@ export interface CityWeatherData {
   visibility: number;
   weather:    Weather[];
   wind:       Wind;
- }
+}
  
- export interface Clouds {
+interface Clouds {
   all: number;
- }
+}
  
- export interface Coord {
+interface Coord {
   lat: number;
   lon: number;
- }
+}
  
- export interface Main {
+interface Main {
   feels_like: number;
   grnd_level: number;
   humidity:   number;
@@ -32,24 +32,24 @@ export interface CityWeatherData {
   temp:       number;
   temp_max:   number;
   temp_min:   number;
- }
+}
  
- export interface Sys {
+interface Sys {
   country: string;
   id:      number;
   sunrise: number;
   sunset:  number;
   type:    number;
- }
+}
  
- export interface Weather {
+interface Weather {
   description: string;
   icon:        string;
   id:          number;
   main:        string;
- }
+}
  
- export interface Wind {
+interface Wind {
   deg:   number;
   speed: number;
- }
+}
