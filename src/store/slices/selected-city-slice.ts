@@ -6,6 +6,6 @@ export interface SelectedCitySlice {
 }
 
 export const createSelectedCitySlice: StateCreator<SelectedCitySlice> = (set) => ({
-  selectedCity: '',
+  selectedCity: 'London',
   setSelectedCity: (city: string) => set({ selectedCity: city })
 })

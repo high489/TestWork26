@@ -11,10 +11,11 @@ import { Spinner } from 'react-bootstrap'
 interface CityWeatherWidgetProps {
   initialCity?: string
   initialWeather?: CityWeatherData | null
-  initialForecast?: CityForecastData | null
 }
 
-const CityWeatherWidget: FC<CityWeatherWidgetProps> = () => {
+const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
+  initialCity, initialWeather,
+}) => {
   const {
     loading,
     error,
@@ -23,6 +24,19 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = () => {
     currentWeather,
     fetchCurrentWeather,
   } = useWeatherStore()
+
+  useEffect(() => {
+    if (!selectedCity && initialWeather && initialCity) {
+      useWeatherStore.setState({
+        currentWeather: initialWeather,
+        selectedCity: initialCity,
+        loading: false,
+        error: null,
+      })
+    } else if (!currentWeather && selectedCity) {
+      fetchCurrentWeather(selectedCity)
+    }
+  }, [selectedCity, currentWeather, initialWeather, initialCity, fetchCurrentWeather])
 
   return (
     <div className={styles['city-weather-widget']}>
