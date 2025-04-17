@@ -1,2 +1,2 @@
-export * from './constants/api'
-export * from './utils/open-weather-map'
+export * from './constants'
+export * from './utils'

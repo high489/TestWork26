@@ -38,7 +38,7 @@ export const createCityWeatherSlice: StateCreator<CityWeatherSlice> = (set) => (
       set({ currentWeather: response.data, loading: false})
     } catch (error) {
       const axiosError = error as AxiosError<{ message?: string }>
-      console.error('Error fetching current weather:', axiosError)
+      console.warn('Error fetching current weather:', axiosError)
       set({
         error: axiosError.response?.data?.message || 'Failed to retrieve city weather data',
         loading: false,
@@ -60,7 +60,7 @@ export const createCityWeatherSlice: StateCreator<CityWeatherSlice> = (set) => (
       set({ forecast: response.data, loading: false})
     } catch (error) {
       const axiosError = error as AxiosError<{ message?: string }>
-      console.error('Error fetching forecast:', axiosError)
+      console.warn('Error fetching forecast:', axiosError)
       set({
         error: axiosError.response?.data?.message || 'Failed to retrieve city forecast data',
         loading: false,

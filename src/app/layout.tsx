@@ -4,7 +4,7 @@ import 'normalize.css'
 import '@/styles/index.scss'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import { Header, Footer } from '@/components'
+import { Header } from '@/components/layouts'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -33,7 +33,6 @@ export default function RootLayout({
         <main>
           {children}
         </main>
-        <Footer />
       </body>
     </html>
   )
