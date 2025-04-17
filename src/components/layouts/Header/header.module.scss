@@ -1,0 +1,13 @@
+.header {
+  border-bottom: 1px solid #eaeaea;
+}
+
+.nav-link {
+  font-weight: 500;
+  color: var(--bs-gray);
+
+  &:hover {
+    text-decoration: underline;
+    color: var(--bs-gray-dark);
+  }
+}
