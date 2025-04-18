@@ -1,5 +1,6 @@
-import { FavoritesCitiesWidget } from '@/components/widgets/FavoritesCitiesWidget'
-import styles from "./page.module.scss"
+import styles from './page.module.scss'
+
+import { FavoritesCitiesWidget } from '@/components/widgets'
 
 export default function Favorites() {
   return (
