@@ -35,6 +35,7 @@ const CitySearch: FC<CitySearchProps> = ({ setCity }) => {
     <div className={styles['city-search']}>
       <InputGroup>
         <Form.Control
+          style={{ boxShadow: 'none' }}
           type='text'
           placeholder='Enter city name'
           value={inputValue}

@@ -3,7 +3,7 @@
 import styles from './city-weather-widget.module.scss'
 import { FC, useEffect } from 'react'
 
-import { CityWeatherData, CityForecastData } from '@/models/interfaces'
+import { CityWeatherData } from '@/models/interfaces'
 import { CitySearch, CityWeatherCard } from '@/components/features'
 import { useWeatherStore } from '@/store/stores'
 import { Spinner } from 'react-bootstrap'
@@ -17,12 +17,13 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
   initialCity, initialWeather,
 }) => {
   const {
-    loading,
-    error,
+    cityWeatherLoading: loading,
+    cityWeatherError: error,
     selectedCity,
     setSelectedCity,
     currentWeather,
     fetchCurrentWeather,
+    addToFavorites,
   } = useWeatherStore()
 
   useEffect(() => {
@@ -30,8 +31,8 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
       useWeatherStore.setState({
         currentWeather: initialWeather,
         selectedCity: initialCity,
-        loading: false,
-        error: null,
+        cityWeatherLoading: false,
+        cityWeatherError: null,
       })
     } else if (!currentWeather && selectedCity) {
       fetchCurrentWeather(selectedCity)
@@ -48,17 +49,20 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
       />
       
       {loading && (
-        <div className="d-flex justify-content-center my-3">
-          <Spinner animation="border" variant="primary" />
+        <div className='d-flex justify-content-center my-3'>
+          <Spinner animation='border' variant='primary' />
         </div>
       )}
 
       {!loading && error && (
-        <div className="text-danger text-center mt-3">{error}</div>
+        <div className='text-danger text-center mt-3'>{error}</div>
       )}
 
       {!loading && !error && currentWeather && (
-        <CityWeatherCard cityWeatherData={currentWeather} />
+        <CityWeatherCard
+          cityWeatherData={currentWeather}
+          addToFavorites={addToFavorites}
+        />
       )}
     </div>
   )

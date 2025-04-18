@@ -1,70 +1,46 @@
 import { StateCreator } from 'zustand'
 import axios, { AxiosError } from 'axios'
 
-import { CityWeatherData, CityForecastData } from '@/models'
-import { OWM_API_KEY, OWM_API_URL } from '@/shared'
-
-const baseParams = {
-  appid: OWM_API_KEY,
-  units: 'metric',
-}
+import { CityWeatherData } from '@/models/interfaces'
+import { OWM_API_KEY, OWM_API_URL } from '@/shared/constants'
 
 export interface CityWeatherSlice {
-  loading: boolean
-  error: string | null
+  cityWeatherLoading: boolean
+  cityWeatherError: string | null
   currentWeather: CityWeatherData | null
-  forecast: CityForecastData | null
   fetchCurrentWeather: (city: string) => Promise<void>
-  fetchForecast: (city: string) => Promise<void>
 }
 
 export const createCityWeatherSlice: StateCreator<CityWeatherSlice> = (set) => ({
-  loading: false,
-  error: null,
+  cityWeatherLoading: false,
+  cityWeatherError: null,
   currentWeather: null,
-  forecast: null,
   fetchCurrentWeather: async (city: string = 'London') => {
     if (!city.trim()) { 
-      set({ error: 'City name cannot be empty', loading: false })
+      set({ cityWeatherError: 'City name cannot be empty', cityWeatherLoading: false })
       return
     }
 
-    set({ loading: true, error: null })
+    set({ cityWeatherLoading: true, cityWeatherError: null })
     try {
       const response = await axios.get<CityWeatherData>(
         `${OWM_API_URL}/weather`,
-        { params: { ...baseParams, q: city } }
+        {
+          params: { 
+            q: city, 
+            appid: OWM_API_KEY,
+            units: 'metric', 
+          } 
+        }
       )
-      set({ currentWeather: response.data, loading: false})
+      set({ currentWeather: response.data, cityWeatherLoading: false})
     } catch (error) {
       const axiosError = error as AxiosError<{ message?: string }>
       console.warn('Error fetching current weather:', axiosError)
       set({
-        error: axiosError.response?.data?.message || 'Failed to retrieve city weather data',
-        loading: false,
+        cityWeatherError: axiosError.response?.data?.message || 'Failed to retrieve city weather data',
+        cityWeatherLoading: false,
       })
     }
   },
-  fetchForecast: async (city: string = 'London') => {
-    if (!city.trim()) { 
-      set({ error: 'City name cannot be empty', loading: false })
-      return
-    }
-
-    set({ loading: true, error: null })
-    try {
-      const response = await axios.get<CityForecastData>(
-        `${OWM_API_URL}/forecast`,
-        { params: { ...baseParams, q: city } }
-      )
-      set({ forecast: response.data, loading: false})
-    } catch (error) {
-      const axiosError = error as AxiosError<{ message?: string }>
-      console.warn('Error fetching forecast:', axiosError)
-      set({
-        error: axiosError.response?.data?.message || 'Failed to retrieve city forecast data',
-        loading: false,
-      })
-    }
-  }
 })

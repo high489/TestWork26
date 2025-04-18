@@ -10,9 +10,10 @@ import Image from 'next/image'
 
 interface CityWeatherCardProps {
   cityWeatherData: CityWeatherData
+  addToFavorites: (city: string) => void
 }
 
-const CityWeatherCard: FC<CityWeatherCardProps> = ({ cityWeatherData }) => {
+const CityWeatherCard: FC<CityWeatherCardProps> = ({ cityWeatherData, addToFavorites }) => {
   const weatherIconUrl = getOwmIconUrl(cityWeatherData.weather[0].icon, 4)
 
   return (
@@ -23,17 +24,23 @@ const CityWeatherCard: FC<CityWeatherCardProps> = ({ cityWeatherData }) => {
           width={64}
           height={64}
           alt={cityWeatherData.weather[0]?.description}
+          priority
         />
 
-        <div className="ms-3 flex-grow-1">
-          <h5 className="mb-1">{cityWeatherData.name}</h5>
-          <h2 className="mb-0">{Math.round(cityWeatherData.main.temp)}°C</h2>
-          <div className="text-muted">
+        <div className='ms-3 flex-grow-1'>
+          <h5 className='mb-1'>{cityWeatherData.name}</h5>
+          <h2 className='mb-0'>{Math.round(cityWeatherData.main.temp)}°C</h2>
+          <div className='text-muted'>
             Feels like {Math.round(cityWeatherData.main.feels_like)}°
           </div>
         </div>
 
-        <Button variant="primary">Add to favorites</Button>
+        <Button
+          variant='primary'
+          onClick={() => addToFavorites(cityWeatherData.name)}
+        >
+          Add to favorites
+        </Button>
       </Card.Body>
     </Card>
   )
