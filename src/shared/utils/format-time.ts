@@ -1,19 +1,12 @@
-export const hHmMformatTime = (date: Date | string): string => {
-  if (typeof date === 'string') {
-    date = date.replace(' ', 'T')
-  }
-  
-  const validDate = new Date(date);
-  
-  if (isNaN(validDate.getTime())) {
-    return 'Invalid Time'
-  }
+export const formatTimeWithOffset = (
+  utcSeconds: number,
+  timezoneOffsetSeconds: number
+): string => {
+  const localMs = (utcSeconds + timezoneOffsetSeconds) * 1000;
+  const date = new Date(localMs)
 
-  const time = validDate.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: false,
-  });
-  
-  return time.replace(/^0/, '')
-};
+  const hours = date.getUTCHours()
+  const minutes = date.getUTCMinutes().toString().padStart(2, '0')
+
+  return `${hours}:${minutes}`
+}
