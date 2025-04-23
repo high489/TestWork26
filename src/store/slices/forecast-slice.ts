@@ -19,7 +19,7 @@ export const createForecastSlice: StateCreator<ForecastSlice> = (set, get) => ({
   forecastError: null,
   forecast: null,
   forecastCache: {},
-  fetchForecast: async (city: string = 'London') => {
+  fetchForecast: async (city: string) => {
     if (!city.trim()) { 
       set({ forecastError: 'City name cannot be empty', forecastLoading: false })
       return

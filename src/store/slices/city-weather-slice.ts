@@ -22,7 +22,7 @@ export const createCityWeatherSlice: StateCreator<CityWeatherSlice> = (set, get)
   currentWeather: null,
   weatherIconUrl: null,
   weatherCache: {},
-  fetchCurrentWeather: async (city: string = 'London') => {
+  fetchCurrentWeather: async (city: string) => {
     if (!city.trim()) { 
       set({ cityWeatherError: 'City name cannot be empty', cityWeatherLoading: false })
       return

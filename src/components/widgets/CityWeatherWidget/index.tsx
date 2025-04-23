@@ -61,7 +61,7 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
         <div className='text-danger text-center mt-3'>{error}</div>
       )}
 
-      {!loading && !error && currentWeather && currentWeather.name === selectedCity && (
+      {!loading && !error && currentWeather && (
         <CityWeatherCard
           cityWeatherData={currentWeather}
           weatherIconUrl={weatherIconUrl}
