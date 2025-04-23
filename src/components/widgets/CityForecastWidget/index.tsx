@@ -13,6 +13,7 @@ const CityForecastWidget: FC = () => {
     cityWeatherLoading,
     cityWeatherError,
     currentWeather,
+    weatherIconUrl,
     fetchCurrentWeather,
     forecastLoading,
     forecastError,
@@ -43,6 +44,7 @@ const CityForecastWidget: FC = () => {
       {!cityWeatherLoading && !cityWeatherError && currentWeather && (
         <CityWeatherCard
           cityWeatherData={currentWeather}
+          weatherIconUrl={weatherIconUrl}
           addToFavorites={addToFavorites}
         />
       )}

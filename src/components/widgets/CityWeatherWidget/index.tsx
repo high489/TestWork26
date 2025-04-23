@@ -9,12 +9,13 @@ import { useWeatherStore } from '@/store/stores'
 import { Spinner } from 'react-bootstrap'
 
 interface CityWeatherWidgetProps {
-  initialCity?: string
-  initialWeather?: CityWeatherData | null
+  initialCity: string | null
+  initialWeather: CityWeatherData | null
+  initialWeatherIcon: string | null
 }
 
 const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
-  initialCity, initialWeather,
+  initialCity, initialWeather, initialWeatherIcon,
 }) => {
   const {
     cityWeatherLoading: loading,
@@ -22,6 +23,7 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
     selectedCity,
     setSelectedCity,
     currentWeather,
+    weatherIconUrl,
     fetchCurrentWeather,
     addToFavorites,
   } = useWeatherStore()
@@ -31,13 +33,14 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
       fetchCurrentWeather(selectedCity)
     } else if (initialWeather && initialCity) {
       useWeatherStore.setState({
-        currentWeather: initialWeather,
         selectedCity: initialCity,
+        currentWeather: initialWeather,
+        weatherIconUrl: initialWeatherIcon,
         cityWeatherLoading: false,
         cityWeatherError: null,
       })
     }
-  }, [selectedCity, initialWeather, initialCity, fetchCurrentWeather])
+  }, [selectedCity, fetchCurrentWeather, initialCity, initialWeather, initialWeatherIcon ])
 
   const handleSetCity = useCallback((city: string) => {
     setSelectedCity(city)
@@ -61,6 +64,7 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
       {!loading && !error && currentWeather && currentWeather.name === selectedCity && (
         <CityWeatherCard
           cityWeatherData={currentWeather}
+          weatherIconUrl={weatherIconUrl}
           addToFavorites={addToFavorites}
         />
       )}

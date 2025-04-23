@@ -3,12 +3,14 @@ import axios, { AxiosError } from 'axios'
 
 import { CityWeatherData } from '@/models/interfaces'
 import { OWM_API_KEY, OWM_API_URL } from '@/shared/constants'
+import { getOwmIconUrl } from '@/shared/utils'
 
 export interface CityWeatherSlice {
   cityWeatherLoading: boolean
   cityWeatherError: string | null
   currentWeather: CityWeatherData | null
-  weatherCache: Record<string, { data: CityWeatherData; timestamp: number }>
+  weatherIconUrl: string | null
+  weatherCache: Record<string, { data: CityWeatherData; timestamp: number; weatherIconUrl: string }>
   fetchCurrentWeather: (city: string) => Promise<void>
 }
 
@@ -18,6 +20,7 @@ export const createCityWeatherSlice: StateCreator<CityWeatherSlice> = (set, get)
   cityWeatherLoading: false,
   cityWeatherError: null,
   currentWeather: null,
+  weatherIconUrl: null,
   weatherCache: {},
   fetchCurrentWeather: async (city: string = 'London') => {
     if (!city.trim()) { 
@@ -28,7 +31,11 @@ export const createCityWeatherSlice: StateCreator<CityWeatherSlice> = (set, get)
     const now = Date.now()
     const cachedWeather = get().weatherCache[city]
     if (cachedWeather && now - cachedWeather.timestamp < WeatherCacheTimeToLive) {
-      set({ currentWeather: cachedWeather.data, cityWeatherLoading: false })
+      set({
+        currentWeather: cachedWeather.data,
+        weatherIconUrl: cachedWeather.weatherIconUrl,
+        cityWeatherLoading: false,
+      })
       return
     }
 
@@ -38,9 +45,14 @@ export const createCityWeatherSlice: StateCreator<CityWeatherSlice> = (set, get)
         `${OWM_API_URL}/weather`,
         { params: { q: city, appid: OWM_API_KEY, units: 'metric' } }
       )
+      const iconUrl = getOwmIconUrl(response.data.weather[0].icon, 4)
       set(state => ({
-        weatherCache: { ...state.weatherCache, [city]: { data: response.data, timestamp: now } },
+        weatherCache: {
+          ...state.weatherCache,
+          [city]: { data: response.data, timestamp: now, weatherIconUrl: iconUrl } 
+        },
         currentWeather: response.data,
+        weatherIconUrl: iconUrl,
         cityWeatherLoading: false,
       }))
     } catch (error) {
@@ -49,6 +61,7 @@ export const createCityWeatherSlice: StateCreator<CityWeatherSlice> = (set, get)
       set({
         cityWeatherError: axiosError.response?.data?.message || 'Failed to retrieve city weather data',
         cityWeatherLoading: false,
+        weatherIconUrl: null,
       })
     }
   },
