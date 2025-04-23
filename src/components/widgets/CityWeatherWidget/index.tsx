@@ -48,9 +48,9 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
         }}
       />
       
-      {loading && (
-        <div className='d-flex justify-content-center my-3'>
-          <Spinner animation='border' variant='primary' />
+      {(loading || (currentWeather && currentWeather.name !== selectedCity)) && (
+        <div className="d-flex justify-content-center my-3">
+          <Spinner animation="border" variant="primary" />
         </div>
       )}
 
@@ -58,7 +58,7 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
         <div className='text-danger text-center mt-3'>{error}</div>
       )}
 
-      {!loading && !error && currentWeather && (
+      {!loading && !error && currentWeather && currentWeather.name === selectedCity && (
         <CityWeatherCard
           cityWeatherData={currentWeather}
           addToFavorites={addToFavorites}
