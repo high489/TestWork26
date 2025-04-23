@@ -1,14 +1,14 @@
 'use client'
 
 import styles from './city-search.module.scss'
-import { FC, useState, ChangeEvent, KeyboardEvent } from 'react'
+import { FC, useState, ChangeEvent, KeyboardEvent, memo } from 'react'
 import { InputGroup, Form, Button } from 'react-bootstrap'
 
 interface CitySearchProps {
   setCity: (city: string) => void
 }
 
-const CitySearch: FC<CitySearchProps> = ({ setCity }) => {
+const CitySearch: FC<CitySearchProps> = memo(({ setCity }) => {
   const [inputValue, setInputValue] = useState<string>('')
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +48,8 @@ const CitySearch: FC<CitySearchProps> = ({ setCity }) => {
       </InputGroup>
     </div>
   )
-}
+})
+
+CitySearch.displayName = 'CitySearch'
 
 export { CitySearch }

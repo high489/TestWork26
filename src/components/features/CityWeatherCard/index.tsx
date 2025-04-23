@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './city-weather-card.module.scss'
-import { FC } from 'react'
+import { FC, memo } from 'react'
 
 import { CityWeatherData } from '@/models/interfaces'
 import { getOwmIconUrl } from '@/shared/utils'
@@ -13,7 +13,7 @@ interface CityWeatherCardProps {
   addToFavorites: (city: string) => void
 }
 
-const CityWeatherCard: FC<CityWeatherCardProps> = ({ cityWeatherData, addToFavorites }) => {
+const CityWeatherCard: FC<CityWeatherCardProps> = memo(({ cityWeatherData, addToFavorites }) => {
   const weatherIconUrl = getOwmIconUrl(cityWeatherData.weather[0].icon, 4)
 
   return (
@@ -44,6 +44,8 @@ const CityWeatherCard: FC<CityWeatherCardProps> = ({ cityWeatherData, addToFavor
       </Card.Body>
     </Card>
   )
-}
+})
+
+CityWeatherCard.displayName = 'CityWeatherCard'
 
 export { CityWeatherCard }

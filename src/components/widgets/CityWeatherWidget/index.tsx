@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './city-weather-widget.module.scss'
-import { FC, useEffect } from 'react'
+import { FC, useCallback, useEffect } from 'react'
 
 import { CityWeatherData } from '@/models/interfaces'
 import { CitySearch, CityWeatherCard } from '@/components/features'
@@ -28,7 +28,7 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
 
   useEffect(() => {
     if (selectedCity) {
-      fetchCurrentWeather(selectedCity);
+      fetchCurrentWeather(selectedCity)
     } else if (initialWeather && initialCity) {
       useWeatherStore.setState({
         currentWeather: initialWeather,
@@ -39,16 +39,16 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
     }
   }, [selectedCity, initialWeather, initialCity, fetchCurrentWeather])
 
+  const handleSetCity = useCallback((city: string) => {
+    setSelectedCity(city)
+    fetchCurrentWeather(city)
+  }, [setSelectedCity, fetchCurrentWeather])
+
   return (
     <div className={styles['city-weather-widget']}>
-      <CitySearch
-        setCity={(city) => {
-          setSelectedCity(city)
-          fetchCurrentWeather(city)
-        }}
-      />
+      <CitySearch setCity={handleSetCity} />
       
-      {(loading || (currentWeather && currentWeather.name !== selectedCity)) && (
+      {loading && (
         <div className="d-flex justify-content-center my-3">
           <Spinner animation="border" variant="primary" />
         </div>
