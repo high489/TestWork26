@@ -1,10 +1,15 @@
-import type { NextConfig } from 'next';
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['openweathermap.org'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'openweathermap.org',
+      },
+    ],
   },
 };
 
-export default nextConfig;
+export default nextConfig
