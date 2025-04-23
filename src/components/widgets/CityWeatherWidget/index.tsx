@@ -27,17 +27,17 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
   } = useWeatherStore()
 
   useEffect(() => {
-    if (!selectedCity && initialWeather && initialCity) {
+    if (selectedCity) {
+      fetchCurrentWeather(selectedCity);
+    } else if (initialWeather && initialCity) {
       useWeatherStore.setState({
         currentWeather: initialWeather,
         selectedCity: initialCity,
         cityWeatherLoading: false,
         cityWeatherError: null,
       })
-    } else if (!currentWeather && selectedCity) {
-      fetchCurrentWeather(selectedCity)
     }
-  }, [selectedCity, currentWeather, initialWeather, initialCity, fetchCurrentWeather])
+  }, [selectedCity, initialWeather, initialCity, fetchCurrentWeather])
 
   return (
     <div className={styles['city-weather-widget']}>
