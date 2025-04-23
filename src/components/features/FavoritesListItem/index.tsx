@@ -16,17 +16,16 @@ interface FavoritesListItemProps {
 const FavoritesListItem: FC<FavoritesListItemProps> = ({
   cityWeatherData, removeFromFavorites,
 }) => {
-  const weatherIconUrl = getOwmIconUrl(cityWeatherData.weather[0].icon, 2)
-
   return (
     <Card className={styles['favorites-list-item']}>
       <Card.Body className='d-flex align-items-center justify-content-between'>
         <div className='d-flex align-items-center'>
           <Image
-            src={weatherIconUrl}
+            src={getOwmIconUrl(cityWeatherData.weather[0].icon, 2)}
             width={64}
             height={64}
             alt={cityWeatherData.weather[0]?.description}
+            priority
           />
           <div>
             <Card.Title className={styles['city']}>{cityWeatherData.name}</Card.Title>

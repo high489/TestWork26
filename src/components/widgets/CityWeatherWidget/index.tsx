@@ -44,7 +44,7 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
 
   const handleSetCity = useCallback((city: string) => {
     setSelectedCity(city)
-  }, [setSelectedCity, fetchCurrentWeather])
+  }, [setSelectedCity])
 
   return (
     <div className={styles['city-weather-widget']}>
