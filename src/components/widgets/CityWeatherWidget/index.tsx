@@ -40,11 +40,10 @@ const CityWeatherWidget: FC<CityWeatherWidgetProps> = ({
         cityWeatherError: null,
       })
     }
-  }, [selectedCity, fetchCurrentWeather, initialCity, initialWeather, initialWeatherIcon ])
+  }, [selectedCity, fetchCurrentWeather, initialCity, initialWeather, initialWeatherIcon])
 
   const handleSetCity = useCallback((city: string) => {
     setSelectedCity(city)
-    fetchCurrentWeather(city)
   }, [setSelectedCity, fetchCurrentWeather])
 
   return (
