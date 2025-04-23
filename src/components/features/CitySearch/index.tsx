@@ -17,7 +17,7 @@ const CitySearch: FC<CitySearchProps> = memo(({ setCity }) => {
 
   const handleSelectCity = () => {
     if (inputValue.trim()) {
-      setCity(inputValue.trim())
+      setCity(inputValue.trim()[0].toUpperCase() + inputValue.trim().slice(1))
       setInputValue('')
     } else {
       setInputValue('')

@@ -2,7 +2,7 @@ import { StateCreator } from 'zustand'
 import axios, { AxiosError } from 'axios'
 
 import { CityWeatherData } from '@/models/interfaces'
-import { OWM_API_KEY, OWM_API_URL } from '@/shared/constants'
+import { OWM_API_KEY, OWM_API_URL, TTL } from '@/shared/constants'
 import { getOwmIconUrl } from '@/shared/utils'
 
 export interface CityWeatherSlice {
@@ -10,11 +10,11 @@ export interface CityWeatherSlice {
   cityWeatherError: string | null
   currentWeather: CityWeatherData | null
   weatherIconUrl: string | null
-  weatherCache: Record<string, { data: CityWeatherData; timestamp: number; weatherIconUrl: string }>
+  weatherCache: Record<string, { data: CityWeatherData; weatherIconUrl: string; timestamp: number }>
   fetchCurrentWeather: (city: string) => Promise<void>
 }
 
-const WeatherCacheTimeToLive = 5 * 60 * 1000
+const weatherCacheTimeToLive = TTL
 
 export const createCityWeatherSlice: StateCreator<CityWeatherSlice> = (set, get) => ({
   cityWeatherLoading: false,
@@ -30,7 +30,7 @@ export const createCityWeatherSlice: StateCreator<CityWeatherSlice> = (set, get)
 
     const now = Date.now()
     const cachedWeather = get().weatherCache[city]
-    if (cachedWeather && now - cachedWeather.timestamp < WeatherCacheTimeToLive) {
+    if (cachedWeather && now - cachedWeather.timestamp < weatherCacheTimeToLive) {
       set({
         currentWeather: cachedWeather.data,
         weatherIconUrl: cachedWeather.weatherIconUrl,
@@ -40,6 +40,7 @@ export const createCityWeatherSlice: StateCreator<CityWeatherSlice> = (set, get)
     }
 
     set({ cityWeatherLoading: true, cityWeatherError: null })
+    
     try {
       const response = await axios.get<CityWeatherData>(
         `${OWM_API_URL}/weather`,
@@ -49,7 +50,7 @@ export const createCityWeatherSlice: StateCreator<CityWeatherSlice> = (set, get)
       set(state => ({
         weatherCache: {
           ...state.weatherCache,
-          [city]: { data: response.data, timestamp: now, weatherIconUrl: iconUrl } 
+          [city]: { data: response.data, weatherIconUrl: iconUrl, timestamp: now } 
         },
         currentWeather: response.data,
         weatherIconUrl: iconUrl,

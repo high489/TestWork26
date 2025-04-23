@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './city-forecast-card.module.scss'
-import { FC } from 'react'
+import { FC, memo } from 'react'
 
 import { CityForecastData } from '@/models/interfaces'
 import { Card } from 'react-bootstrap'
@@ -12,7 +12,7 @@ interface CityForecastCardProps {
   cityForecastData: CityForecastData
 }
 
-const CityForecastCard: FC<CityForecastCardProps> = ({ cityForecastData }) => {
+const CityForecastCard: FC<CityForecastCardProps> = memo(({ cityForecastData }) => {
   const { timezone } = cityForecastData.city
   const forecastList = cityForecastData.list.slice(0, 5)
 
@@ -39,6 +39,8 @@ const CityForecastCard: FC<CityForecastCardProps> = ({ cityForecastData }) => {
       </Card.Body>
     </Card>
   )
-}
+})
+
+CityForecastCard.displayName = 'CityForecastCard'
 
 export { CityForecastCard }
