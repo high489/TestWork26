@@ -2,7 +2,7 @@ import { StateCreator } from 'zustand'
 import axios, { AxiosError } from 'axios'
 
 import { CityWeatherData } from '@/models/interfaces'
-import { OWM_API_KEY, OWM_API_URL } from '@/shared/constants'
+import { OWM_API_KEY, OWM_API_URL, TTL } from '@/shared/constants'
 
 export interface FavoritesSlice {
   favorites: string[]
@@ -12,8 +12,11 @@ export interface FavoritesSlice {
   favoriteWeatherLoading: boolean
   favoriteWeatherError: string | null
   favoritesWeather: Record<string, CityWeatherData>
+  favoritesWeatherCache: Record<string, { data: CityWeatherData; timestamp: number }>
   fetchFavoriteWeather: (city: string) => Promise<void>
 }
+
+const favoritesCacheTimeToLive = TTL
 
 export const createFavoritesSlice: StateCreator<FavoritesSlice> = (set, get) => ({
   favorites: [],
@@ -31,24 +34,38 @@ export const createFavoritesSlice: StateCreator<FavoritesSlice> = (set, get) => 
   favoriteWeatherLoading: false,
   favoriteWeatherError: null,
   favoritesWeather: {},
-  fetchFavoriteWeather: async (city: string = '') => {
+  favoritesWeatherCache: {},
+  fetchFavoriteWeather: async (city: string) => {
     if (!city.trim()) return
-    set({ favoriteWeatherLoading: true, favoriteWeatherError: null })
-    try {
-      const response = await axios.get<CityWeatherData>(
-        `${OWM_API_URL}/weather`,
-        {
-          params: { 
-            q: city, 
-            appid: OWM_API_KEY,
-            units: 'metric', 
-          } 
-        }
-      )
+
+    const now = Date.now()
+    const cachedWeather = get().favoritesWeatherCache[city]
+    if (cachedWeather && now - cachedWeather.timestamp < favoritesCacheTimeToLive) {
       set(state => ({
         favoritesWeather: {
           ...state.favoritesWeather,
-          [city]: response.data
+          [city]: cachedWeather.data,
+        },
+      }))
+      return
+    }
+
+    set({ favoriteWeatherLoading: true, favoriteWeatherError: null })
+
+    try {
+      const response = await axios.get<CityWeatherData>(
+        `${OWM_API_URL}/weather`,
+        { params: { q: city, appid: OWM_API_KEY, units: 'metric' } }
+      )
+
+      set(state => ({
+        favoritesWeatherCache: {
+          ...state.favoritesWeatherCache,
+          [city]: { data: response.data, timestamp: now },
+        },
+        favoritesWeather: {
+          ...state.favoritesWeather,
+          [city]: response.data,
         },
         favoriteWeatherLoading: false
       }))

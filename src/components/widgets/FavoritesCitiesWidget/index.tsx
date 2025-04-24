@@ -18,10 +18,8 @@ const FavoritesCitiesWidget: FC = () => {
   } = useWeatherStore()
 
   useEffect(() => {
-    favorites.forEach(favCity => {
-      if (!favoritesWeather[favCity]) fetchFavoriteWeather(favCity)
-    })
-  }, [favorites, favoritesWeather, fetchFavoriteWeather])
+    favorites.forEach(favCity => fetchFavoriteWeather(favCity))
+  }, [favorites, fetchFavoriteWeather])
 
   return (
     <div className={styles['favorites-cities-widget']}>

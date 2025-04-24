@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './favorites-list-item.module.scss'
-import { FC } from 'react'
+import { FC, memo } from 'react'
 
 import { CityWeatherData } from '@/models/interfaces'
 import { getOwmIconUrl } from '@/shared/utils'
@@ -13,7 +13,7 @@ interface FavoritesListItemProps {
   removeFromFavorites: (city: string) => void
 }
 
-const FavoritesListItem: FC<FavoritesListItemProps> = ({
+const FavoritesListItem: FC<FavoritesListItemProps> = memo(({
   cityWeatherData, removeFromFavorites,
 }) => {
   return (
@@ -45,6 +45,8 @@ const FavoritesListItem: FC<FavoritesListItemProps> = ({
       </Card.Body>
     </Card>
   )
-}
+})
+
+FavoritesListItem.displayName = 'FavoritesListItem'
 
 export { FavoritesListItem }
